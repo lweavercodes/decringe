@@ -1,0 +1,6 @@
+interface:
+  display_name: "Reader First"
+  short_description: "Audience-aware copywriting and clear UX text"
+  default_prompt: "Use $reader-first to improve this copy for its reader and verify its promises against product facts."
+policy:
+  allow_implicit_invocation: true

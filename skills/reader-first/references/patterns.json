@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "patterns": [
+    {"rule": "COPY-01", "candidate": "Technical mechanism may need translation for this reader", "regex": "\\b(?:multi[- ]tenant|orchestration|hydration|vector (?:database|store)|embeddings?|RAG pipeline|event[- ]driven|serverless|PostgreSQL|FastAPI|Supabase|API[- ]first)\\b"},
+    {"rule": "COPY-04", "candidate": "Broad benefit may conceal the actual capability", "regex": "\\b(?:seamless(?:ly)?|unlock(?:ing)? (?:your |the )?(?:potential|power)|supercharge|next[- ]generation|game[- ]chang(?:er|ing)|transform your|elevate your|robust solution|powerful platform)\\b"},
+    {"rule": "COPY-05", "candidate": "Promise needs evidence and scope", "regex": "\\b(?:100%|guaranteed|never (?:wrong|fail|miss)|always accurate|error[- ]free|fully autonomous|military[- ]grade|bank[- ]level|SOC ?2 compliant|GDPR compliant|save(?:s)? \\d+ (?:hours?|minutes?)|\\d+% (?:faster|more|less))(?=\\W|$)"},
+    {"rule": "COPY-06", "candidate": "Proof or urgency needs a real source", "regex": "\\b(?:trusted by|only \\d+ (?:spots?|seats?) left|limited[- ]time offer|industry[- ]leading|award[- ]winning)\\b"},
+    {"rule": "COPY-07", "candidate": "Offer condition or CTA must match the destination", "regex": "\\b(?:no (?:(?:credit|payment) )?card required|free forever|start (?:your )?free trial|instant access|no commitment)\\b"},
+    {"rule": "UX-01", "candidate": "Internal state or exception may have leaked into UI text", "regex": "\\b(?:hydrated|entity|mutation|unauthorized|internal server error|SQLSTATE|undefined|null pointer)\\b"},
+    {"rule": "UX-04", "candidate": "Cause, data retention, or staffed response needs verification", "regex": "\\b(?:check your (?:internet|connection)|your (?:work|data|draft) is safe|we(?:'|’)re (?:looking into|investigating)|our team has been notified)\\b"},
+    {"rule": "UX-05", "candidate": "Consequence or recovery needs verification", "regex": "\\b(?:cannot be undone|can(?:'|’)t be undone|permanently delet(?:e|ed)|undo (?:anytime|at any time)|recover (?:anytime|at any time))\\b"},
+    {"rule": "STYLE-01", "candidate": "Significance may be inflated", "regex": "\\b(?:pivotal|revolutionary|revolutioniz(?:e|es|ing)|stands as a testament|testament to|paradigm shift)\\b"},
+    {"rule": "STYLE-02", "candidate": "Canned contrast may replace a useful distinction", "regex": "\\b(?:not just|more than just|isn(?:'|’)t just|it(?:'|’)s about)\\b"},
+    {"rule": "STYLE-03", "candidate": "Praise or intensifier may lack substance", "regex": "\\b(?:incredibly|effortlessly|best[- ]in[- ]class|unparalleled|unmatched|delv(?:e|es|ed|ing)|leverag(?:e|es|ed|ing)|foster(?:s|ed|ing)?)\\b"},
+    {"rule": "STYLE-04", "candidate": "Stock introduction or conclusion may add no information", "regex": "\\b(?:in today(?:'|’)s (?:fast[- ]paced|digital|ever[- ]evolving) world|in conclusion|at the end of the day|it(?:'|’)s worth noting|ultimately)\\b"}
+  ]
+}
