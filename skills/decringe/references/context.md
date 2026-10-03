@@ -14,10 +14,10 @@ Use equivalent existing documents such as Impeccable's `PRODUCT.md` rather than 
 ## Resolve scope
 
 1. Identify the target app or project from the user's files and request. In a monorepo, use the app root, not a sibling or the shell's arbitrary current directory.
-2. Prefer explicit context supplied or named by the user. Within one chosen project, discover each record at the root or `.reader-first/`. Names are case-insensitive, so an existing `audience.md` works.
-3. If both locations or case variants provide the same record, report ambiguity and inspect them. Select the authoritative one using project instructions or the user's context; do not merge contradictory records silently. Different record types may live in different supported locations within the same project.
+2. Prefer explicit context supplied or named by the user. Within one chosen project, discover each record at the root, `.decringe/`, or the legacy `.reader-first/` directory. Names are case-insensitive, so an existing `audience.md` works.
+3. If multiple locations or case variants provide the same record, report ambiguity and inspect them. Select the authoritative one using project instructions or the user's context; do not merge contradictory records silently. Different record types may live in different supported locations within the same project.
 4. Do not walk parent projects for fallback. Load shared context only when the project or user explicitly identifies it. This prevents one app's audience becoming another app's reader.
-5. A surface brief is loaded only when selected by the task. Suggested home: `.reader-first/briefs/<surface>.md`. Reuse an existing surface record if it covers the same decisions.
+5. A surface brief is loaded only when selected by the task. Suggested home: `.decringe/briefs/<surface>.md`. Reuse an existing surface record if it covers the same decisions.
 
 The optional `scripts/load_context.py` implements step 2 and flags ambiguity. It reports record paths, not file contents. It rejects auto-discovered symlinks outside the chosen project; an explicitly supplied brief may live elsewhere. This prevents accidental cross-project context, not all possible access to sensitive files. Never use context discovery to search credentials.
 

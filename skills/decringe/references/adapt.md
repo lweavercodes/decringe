@@ -1,6 +1,6 @@
 # Adapt
 
-Adapt wording for a specified reader, channel, or locale. Use the requested target audience rather than redefining the product. Read the relevant domain guide and [context](context.md).
+Adapt wording for a specified reader, channel, or locale. Use the requested target audience rather than redefining the product. Read the selected module guidance and [context](context.md).
 
 Determine what the new reader knows, which task matters, and what the channel permits. Keep all product and offer facts fixed unless the user provides a different offer. A change from consumer copy to developer marketing may require more technical precision. A change in locale may require different examples, formality, or vocabulary; do not invent local price, availability, or legal assurances.
 

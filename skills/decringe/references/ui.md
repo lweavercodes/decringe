@@ -1,4 +1,4 @@
-# UX writing decisions
+# UI text
 
 UI text is part of product behavior. Check the state, the action, and its consequence before polishing the sentence.
 
@@ -27,3 +27,17 @@ Empty states should identify the state and an available next step, if one exists
 Check interpolation and plural forms, screen reader names, focus context, space limits, and terminology in surrounding screens. A visible icon still needs an appropriate accessible name. Do not use color, position, or a joke as the only instruction. Avoid claiming accessibility compliance from a wording review alone.
 
 When behavior is unavailable, provide conditional wording with the missing fact outside the publishable text. Verify the relevant path or report the limit; do not silently repair behavior through copy.
+
+## Owned checks
+
+| ID | Check |
+| --- | --- |
+| UX-01 | Internal or inconsistent terminology obscures the visible user object/state. |
+| UX-02 | A label misstates the action, destination or consequence, including on marketing pages. |
+| UX-03 | Text confuses loading, empty, pending, partial and completed states. |
+| UX-04 | Errors invent a cause, retained work, support response or recovery path. |
+| UX-05 | Destruction, visibility or recoverability claims conflict with action behavior. |
+| UX-06 | Transactional requirements, charges, permissions or sharing conditions are missing before commitment. SaaS owns page-level offer explanation. |
+| UX-07 | Wording loses functional variables, plurals, accessible meaning or task context. |
+
+A technical term may be correct for a developer tool; a short “Continue” may be clear from surrounding context. Preserve accurate labels and state distinctions. Apply [shared constraints](shared.md); UI has no separate AI-tell catalog and does not develop product positioning.

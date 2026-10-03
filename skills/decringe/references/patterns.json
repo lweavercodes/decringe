@@ -1,0 +1,226 @@
+{
+  "version": 2,
+  "patterns": [
+    {
+      "rule": "COPY-01",
+      "candidate": "Technical mechanism may need translation for this reader",
+      "regex": "\\b(?:multi[- ]tenant|orchestration|hydration|vector (?:database|store)|embeddings?|RAG pipeline|event[- ]driven|serverless|PostgreSQL|FastAPI|Supabase|API[- ]first)\\b",
+      "module": "saas-copy"
+    },
+    {
+      "rule": "STYLE-03",
+      "candidate": "Broad benefit may conceal the actual capability",
+      "regex": "\\b(?:seamless(?:ly)?|unlock(?:ing)? (?:your |the )?(?:potential|power)|supercharge|next[- ]generation|game[- ]chang(?:er|ing)|transform your|elevate your|robust solution|powerful platform)\\b",
+      "module": "core"
+    },
+    {
+      "rule": "COPY-05",
+      "candidate": "Promise needs evidence and scope",
+      "regex": "\\b(?:100%|guaranteed|never (?:wrong|fail|miss)|always accurate|error[- ]free|fully autonomous|military[- ]grade|bank[- ]level|SOC ?2 compliant|GDPR compliant|save(?:s)? \\d+ (?:hours?|minutes?)|\\d+% (?:faster|more|less))(?=\\W|$)",
+      "module": "saas-copy"
+    },
+    {
+      "rule": "COPY-06",
+      "candidate": "Proof or urgency needs a real source",
+      "regex": "\\b(?:trusted by|only \\d+ (?:spots?|seats?) left|limited[- ]time offer|industry[- ]leading|award[- ]winning)\\b",
+      "module": "saas-copy"
+    },
+    {
+      "rule": "COPY-07",
+      "candidate": "Offer conditions or buyer commitment need verification",
+      "regex": "\\b(?:no (?:(?:credit|payment) )?card required|free forever|start (?:your )?free trial|instant access|no commitment)\\b",
+      "module": "saas-copy"
+    },
+    {
+      "rule": "UX-01",
+      "candidate": "Internal state or exception may have leaked into UI text",
+      "regex": "\\b(?:hydrated|entity|mutation|unauthorized|internal server error|SQLSTATE|undefined|null pointer)\\b",
+      "module": "ui"
+    },
+    {
+      "rule": "UX-04",
+      "candidate": "Cause, data retention, or staffed response needs verification",
+      "regex": "\\b(?:check your (?:internet|connection)|your (?:work|data|draft) is safe|we(?:'|’)re (?:looking into|investigating)|our team has been notified)\\b",
+      "module": "ui"
+    },
+    {
+      "rule": "UX-05",
+      "candidate": "Consequence or recovery needs verification",
+      "regex": "\\b(?:cannot be undone|can(?:'|’)t be undone|permanently delet(?:e|ed)|undo (?:anytime|at any time)|recover (?:anytime|at any time))\\b",
+      "module": "ui"
+    },
+    {
+      "rule": "STYLE-01",
+      "candidate": "Significance may be inflated",
+      "regex": "\\b(?:pivotal|revolutionary|revolutioniz(?:e|es|ing)|stands as a testament|testament to|paradigm shift)\\b",
+      "module": "core"
+    },
+    {
+      "rule": "STYLE-02",
+      "candidate": "Canned contrast may replace a useful distinction",
+      "regex": "\\b(?:not just|more than just|isn(?:'|’)t just|it(?:'|’)s about)\\b",
+      "module": "core"
+    },
+    {
+      "rule": "STYLE-03",
+      "candidate": "Praise or intensifier may lack substance",
+      "regex": "\\b(?:incredibly|effortlessly|best[- ]in[- ]class|unparalleled|unmatched|delv(?:e|es|ed|ing)|leverag(?:e|es|ed|ing)|foster(?:s|ed|ing)?)\\b",
+      "module": "core"
+    },
+    {
+      "rule": "STYLE-04",
+      "candidate": "Stock introduction or conclusion may add no information",
+      "regex": "\\b(?:in today(?:'|’)s (?:fast[- ]paced|digital|ever[- ]evolving) world|in conclusion|at the end of the day|it(?:'|’)s worth noting|ultimately)\\b",
+      "module": "core"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-01",
+      "candidate": "That X matters may be a synthetic rhetorical move",
+      "regex": "\\b(?:that|this|it)\\s+(?:[^.!?]{1,80}\\s+)?matters[.!?]",
+      "pattern_id": "that-x-matters"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-01",
+      "candidate": "Why that matters may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)why\\ that\\ matters(?!\\w)",
+      "pattern_id": "why-that-matters"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-03",
+      "candidate": "High-frequency AI words may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:delve|delves|delving|pivotal|crucial|foster|fosters|fostering|meticulous|meticulously|underscore|underscores|underscoring|showcase|showcases|showcasing|vibrant|testament|realm|groundbreaking|unprecedented|elevate|elevates|elevating|harness|harnesses|harnessing|empower|empowers|empowering|streamline|streamlines|streamlining|resonate|resonates|resonating|garner|garners|garnering|fundamentally|remarkably|notably|synergy|ecosystem|paradigm)(?!\\w)",
+      "pattern_id": "high-frequency-ai-words"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "Generic transitions may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:furthermore|moreover|additionally|in\\ addition|in\\ conclusion|it['’]s\\ worth\\ noting|it\\ is\\ worth\\ noting|it\\ should\\ be\\ noted|it['’]s\\ important\\ to\\ remember|it\\ is\\ important\\ to\\ remember|in\\ today['’]s\\ world|in\\ today['’]s\\ fast\\-paced|in\\ the\\ ever\\-evolving|when\\ it\\ comes\\ to)(?!\\w)",
+      "pattern_id": "generic-transitions"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-07",
+      "candidate": "Copula avoidance may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:serves\\ as|stands\\ as|acts\\ as|functions\\ as|works\\ as|operates\\ as)(?!\\w)",
+      "pattern_id": "copula-avoidance"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-01",
+      "candidate": "Significance inflation may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:plays\\ a\\ significant\\ role|plays\\ a\\ crucial\\ role|plays\\ a\\ pivotal\\ role|represents\\ a\\ significant|represents\\ a\\ fundamental|marks\\ a\\ pivotal|marks\\ a\\ significant|setting\\ the\\ stage\\ for|indelible\\ mark|the\\ implications\\ cannot\\ be\\ overstated|cannot\\ be\\ overstated|at\\ the\\ forefront\\ of|a\\ testament\\ to|underscores\\ the\\ importance|highlights\\ the\\ importance)(?!\\w)",
+      "pattern_id": "significance-inflation"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-05",
+      "candidate": "False intimacy may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:i['’]ll\\ be\\ honest\\ with\\ you|i['’]ll\\ be\\ honest,|let['’]s\\ be\\ real|here['’]s\\ what\\ most\\ people\\ won['’]t\\ tell\\ you|here['’]s\\ what\\ nobody\\ tells\\ you|here['’]s\\ the\\ truth|unpopular\\ opinion:|controversial\\ opinion:|i\\ know\\ this\\ might\\ be\\ controversial)(?!\\w)",
+      "pattern_id": "false-intimacy"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-06",
+      "candidate": "Promise framing may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:by\\ the\\ end\\ of\\ this\\ section|by\\ the\\ end\\ of\\ this\\ article|by\\ the\\ end\\ of\\ this\\ guide|by\\ the\\ end\\ of\\ this\\ comparison|by\\ the\\ end\\ of\\ this\\ post|what\\ you['’]ll\\ learn|what\\ you\\ will\\ learn|what\\ this\\ guide\\ delivers|what\\ you['’]ll\\ be\\ able\\ to\\ do|what\\ you\\ will\\ be\\ able\\ to\\ do|in\\ this\\ section,\\ you['’]ll|in\\ this\\ section,\\ you\\ will)(?!\\w)",
+      "pattern_id": "promise-framing"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "Not X. Not Y. Just Z. may be a synthetic rhetorical move",
+      "regex": "\\bNot\\b[^.!?]{1,40}[.!?]\\s+\\bNot\\b[^.!?]{1,40}[.!?]\\s+\\bJust\\b",
+      "pattern_id": "tricolon-negation"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-02",
+      "candidate": "Not X but Y reframe may be a synthetic rhetorical move",
+      "regex": "\\b(?:this|it|the question|the problem|the issue)\\s+(?:isn['’]?t|is not|wasn['’]?t|was not)\\s+(?:just\\s+)?[^.!?]{1,120}[.!?]\\s*(?:it['’]?s|it is|the question is|the problem is|the issue is)\\b",
+      "pattern_id": "not-x-but-y-reframe"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-02",
+      "candidate": "Generic X is not Y. It is Z. may be a synthetic rhetorical move",
+      "regex": "\\b[A-Z\\[][^\\n.!?]{0,80}\\s+(?:isn['’]?t|is not|wasn['’]?t|was not)\\s+(?:just\\s+)?[^.!?]{1,120}[.!?]\\s*(?:It['’]?s|It is)\\b",
+      "pattern_id": "generic-not-x-it-is-y-reframe"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-02",
+      "candidate": "That sounds small. It isn't. may be a synthetic rhetorical move",
+      "regex": "\\b(?:that|this|it)\\s+sounds\\s+(?:small|basic|simple|minor|obvious)\\.\\s*(?:it|that|this)\\s+(?:isn['’]?t|is not)\\b",
+      "pattern_id": "minimization-reversal"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-02",
+      "candidate": "Performed concession pivot may be a synthetic rhetorical move",
+      "regex": "\\b(?:you (?:might|may) think|it (?:may|might) seem|the fair pushback is|now, the fair pushback is|the counterargument is|the objection is)[^.!?]{0,160}[.!?]\\s*(?:Sure|Maybe|Fine|Possibly|True|Fair|Granted|Okay)\\.",
+      "pattern_id": "performed-concession-pivot"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-02",
+      "candidate": "Sure. But. may be a synthetic rhetorical move",
+      "regex": "\\b(?:Sure|Maybe|Fine)\\.\\s+But\\b",
+      "pattern_id": "standalone-concession-pivot"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-02",
+      "candidate": "The mistake people make is thinking X. It isn't. may be a synthetic rhetorical move",
+      "regex": "\\bThe mistake people make is thinking\\b[^.!?]{0,180}[.!?]\\s*(?:It (?:isn['’]?t|is not|doesn['’]?t|does not)|They (?:aren['’]?t|are not|don['’]?t|do not))\\b",
+      "pattern_id": "misconception-correction"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "Self-answered question fragment may be a synthetic rhetorical move",
+      "regex": "\\b(?:the problem|the result|the best part|the kicker|what matters|what changes)\\?\\s+\\w+",
+      "pattern_id": "self-answered-question"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "Synthetic specificity bridges may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:more\\ concretely,|here['’]s\\ what\\ i\\ mean|and\\ here['’]s\\ the\\ part\\ most\\ people\\ miss|but\\ here['’]s\\ the\\ truth)(?!\\w)",
+      "pattern_id": "synthetic-specificity-bridges"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "That's the X. may be a synthetic rhetorical move",
+      "regex": "\\b(?:that|this)['’]s\\s+the\\s+[a-z][a-z-]{1,30}[.!?]",
+      "pattern_id": "thats-the-authority-tag"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "Known punchline authority tags may be a synthetic rhetorical move",
+      "regex": "(?<!\\w)(?:that['’]s\\ the\\ job\\.|that['’]s\\ the\\ point\\.|that['’]s\\ the\\ move\\.|wrong\\ diagnosis\\.)(?!\\w)",
+      "pattern_id": "known-punchline-authority-tags"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-04",
+      "candidate": "Have you ever opener may be a synthetic rhetorical move",
+      "regex": "\\bHave you ever\\b",
+      "pattern_id": "rhetorical-question-opener"
+    },
+    {
+      "module": "core",
+      "rule": "STYLE-08",
+      "candidate": "Em-dash overuse may be a synthetic rhetorical move",
+      "regex": "\\w\\s*—\\s*\\w",
+      "pattern_id": "em-dash-overuse",
+      "kind": "count_regex",
+      "threshold": 2
+    }
+  ]
+}

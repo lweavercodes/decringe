@@ -15,12 +15,13 @@ def discover(root, brief=None):
     if not root.is_dir():
         raise ValueError("Project root must be a directory")
     folders = [root]
-    optional = root / ".reader-first"
-    if optional.exists():
-        resolved = optional.resolve()
-        if not resolved.is_relative_to(root) or not resolved.is_dir():
-            raise ValueError(".reader-first must be a directory inside the selected project")
-        folders.append(optional)
+    for name in (".decringe", ".reader-first"):
+        optional = root / name
+        if optional.exists():
+            resolved = optional.resolve()
+            if not resolved.is_relative_to(root) or not resolved.is_dir():
+                raise ValueError("{} must be a directory inside the selected project".format(name))
+            folders.append(optional)
     records, warnings = {}, []
     for name in RECORDS:
         matches = []

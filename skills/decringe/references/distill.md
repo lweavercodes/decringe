@@ -1,6 +1,6 @@
 # Distill
 
-Shorten to fit the reader's decision or the requested space. Read the applicable domain guide. Identify the essential action/offer, qualifying conditions, and next step before cutting.
+Shorten to fit the reader's decision or the requested space. Read the selected module guidance. Identify the essential action/offer, qualifying conditions, and next step before cutting.
 
 Remove repeated reassurance, introductions, empty intensifiers, duplicated benefits, and details the reader does not need here. Preserve prices, restrictions, error consequences, uncertainty, important technical requirements, and distinctions between actions such as deleting and archiving.
 

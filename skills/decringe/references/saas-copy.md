@@ -1,4 +1,4 @@
-# Copywriting decisions
+# SaaS copy
 
 The question is whether the right reader can understand what this offers, why it matters in their situation, and what to do next. Smooth wording alone does not answer it.
 
@@ -24,12 +24,28 @@ Separate current availability, planned behavior, and illustrative examples. Chec
 
 Use supplied proof accurately. Keep the measured population, timeframe, method, qualifiers, and attribution when they affect interpretation. Do not invent a testimonial to fill a design component; remove or mark the component for editorial work outside public copy.
 
-## Match the next step
+## Set the appropriate commitment
 
-Write the CTA for its real destination. A waitlist is not account creation. A demo request is not an instant demo. A trial that requires a card cannot carry “no card required.” A destructive action is not “continue.” Verify the route/flow when available and flag unknown behavior.
+Explain what the reader is committing to and the offer's relevant conditions: price, trial limits, payment requirements, access, setup, and what they receive. Keep material qualifications beside the promise they qualify. A persuasive label cannot make a waitlist equivalent to account access.
 
-Keep the main action easy to find without treating every supporting link as a conversion mistake. The appropriate commitment depends on entry context and reader readiness. No universal CTA wording or page structure guarantees conversion.
+Choose the appropriate commitment for reader readiness and entry context. Supporting information or an evaluation link may be useful; not every secondary action is a conversion mistake. UI owns the literal correctness of button/link labels and their actual handlers. For a complete page with controls, load [ui](ui.md) for those spans and report one repair per issue. No universal CTA wording or page structure guarantees conversion.
 
 ## Review the surface
 
 Check that sections advance the decision instead of repeating the headline. Put qualifications close to affected claims. Retain scannable headings and specific examples where useful; do not prescribe layout redesign as a copy fix. Preserve purposeful tone, avoid manufactured shame and urgency, and keep domain terms consistent with the interface.
+
+## Owned checks
+
+| ID | Check |
+| --- | --- |
+| COPY-01 | Implementation dominates the offer for this buyer; translate only to supported capabilities/tasks. |
+| COPY-02 | Features lack relevance to a buyer decision; establish the task without inventing benefits. |
+| COPY-03 | The offer/category is unrecognizable where the reader needs it. |
+| COPY-04 | Benefit claims are interchangeable or fail to explain fit. Core owns individual empty words; this rule owns the missing commercial substance. |
+| COPY-05 | A commercial promise exceeds evidence or loses scope/conditions. |
+| COPY-06 | Proof, customer counts, testimonials, credentials or scarcity are manufactured. |
+| COPY-07 | Offer conditions or buyer commitment are misstated/omitted. UI owns action-label accuracy. |
+| COPY-08 | Customer motives, shame or quotations are invented as market evidence. |
+| COPY-09 | Page sections fail to advance the buyer's decision or bury a material condition. Core owns repetitive sentence cadence. |
+
+A feature table, developer-facing mechanism, established offer, authentic quotation or deliberate campaign voice may be appropriate. Judge against context, not a rigid page formula. Apply [shared constraints](shared.md); do not maintain a second AI-word list here.

@@ -1,6 +1,6 @@
 # Write
 
-Create the requested copy from verified substance. Read the applicable domain guide. Decide the reader, their current situation, the product capability that matters, and the next action. Use the conversation as a brief when sufficient; a saved `BRIEF.md` is optional.
+Create the requested copy from verified substance. Read the selected module guidance. Decide the reader, their current situation, the product capability that matters, and the next action. Use the conversation as a brief when sufficient; a saved `BRIEF.md` is optional.
 
 For each important promise, identify the fact or supplied evidence that supports it. If proof is unavailable, describe the supported capability or leave a clearly marked editorial note outside the publishable copy. Never add “trusted by,” fabricated testimonials, mock prices, logos, artificial scarcity, or placeholder statistics to make a page look complete.
 

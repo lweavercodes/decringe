@@ -8,11 +8,12 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "reader-first"
+SKILL = ROOT / "skills" / "decringe"
 
 
 def load(name, path):
@@ -22,10 +23,10 @@ def load(name, path):
     return module
 
 
-checker = load("reader_first_checker", SKILL / "scripts" / "check.py")
-context = load("reader_first_context", SKILL / "scripts" / "load_context.py")
-installer = load("reader_first_installer", ROOT / "install.py")
-packager = load("reader_first_packager", ROOT / "scripts" / "package.py")
+checker = load("decringe_checker", SKILL / "scripts" / "check.py")
+context = load("decringe_context", SKILL / "scripts" / "load_context.py")
+installer = load("decringe_installer", ROOT / "install.py")
+packager = load("decringe_packager", ROOT / "scripts" / "package.py")
 
 
 def command(script, *args, stdin=None, cwd=None):
@@ -62,10 +63,43 @@ class ScannerTests(unittest.TestCase):
 
     def test_developer_precision_is_a_candidate_not_an_auto_edit(self):
         text = "PostgreSQL logical replication with at-least-once delivery."
-        result = checker.scan(text, "sample")
+        result = checker.scan(text, "sample", profile="saas-copy")
         self.assertEqual(text, "PostgreSQL logical replication with at-least-once delivery.")
         self.assertTrue(result["candidates"])
         self.assertNotIn("score", result)
+
+    def test_profiles_always_include_core_and_exclude_other_specialist(self):
+        text = "Furthermore, PostgreSQL supports replication. Your draft is safe."
+        results = {name: checker.scan(text, "sample", profile=name) for name in checker.PROFILES}
+        modules = lambda result: {item["module"] for item in result["candidates"]}
+        self.assertEqual(modules(results["core"]), {"core"})
+        self.assertEqual(modules(results["saas-copy"]), {"core", "saas-copy"})
+        self.assertEqual(modules(results["ui"]), {"core", "ui"})
+        self.assertEqual(modules(results["saas-copy+ui"]), {"core", "saas-copy", "ui"})
+        core_spans = {(x["start"], x["end"]) for x in results["core"]["candidates"]}
+        for result in results.values():
+            self.assertEqual(core_spans, {(x["start"], x["end"]) for x in result["candidates"] if x["module"] == "core"})
+
+    def test_same_owner_and_span_emitted_once(self):
+        result = checker.scan("Pivotal work. Delve into a vibrant ecosystem.", "sample")
+        locations = [(x["module"], x["start"], x["end"]) for x in result["candidates"]]
+        self.assertEqual(len(locations), len(set(locations)))
+        self.assertEqual(len([x for x in result["candidates"] if x["match"] == "Pivotal"]), 1)
+
+    def test_legacy_cadences_and_count_threshold_remain_available(self):
+        text = "Let's be real. By the end of this guide, you'll know. The result? Better words. That's the move."
+        rules = {x["rule"] for x in checker.scan(text, "sample")["candidates"]}
+        self.assertTrue({"STYLE-04", "STYLE-05", "STYLE-06"}.issubset(rules))
+        one = checker.scan("One — aside.", "sample")["candidates"]
+        two = checker.scan("One — aside. Two — pauses.", "sample")["candidates"]
+        self.assertFalse(any(x["rule"] == "STYLE-08" for x in one))
+        self.assertTrue(any(x["rule"] == "STYLE-08" for x in two))
+
+    def test_legacy_json_flag_and_bad_profile(self):
+        result = command(SKILL / "scripts" / "check.py", "-", "--json", stdin="Furthermore.")
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)["schema_version"], 2)
+        self.assertEqual(command(SKILL / "scripts" / "check.py", "-", "--profile", "missing", stdin="").returncode, 2)
 
     def test_cli_stdin_and_explicit_gate(self):
         script = SKILL / "scripts" / "check.py"
@@ -90,12 +124,26 @@ class ScannerTests(unittest.TestCase):
 
 
 class ContextTests(unittest.TestCase):
+    def test_legacy_context_remains_readable_and_conflicts_are_ambiguous(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            legacy = root / ".reader-first"
+            legacy.mkdir()
+            (legacy / "AUDIENCE.md").write_text("Teachers")
+            self.assertEqual(context.discover(root)["records"]["AUDIENCE.md"]["status"], "found")
+            modern = root / ".decringe"
+            modern.mkdir()
+            (modern / "AUDIENCE.md").write_text("Developers")
+            result = context.discover(root)["records"]["AUDIENCE.md"]
+            self.assertEqual(result["status"], "ambiguous")
+            self.assertIsNone(result["path"])
+
     def test_case_insensitive_scope_and_explicit_brief(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             (root / "audience.md").write_text("Teachers")
-            (root / ".reader-first").mkdir()
-            (root / ".reader-first" / "PRODUCT.md").write_text("Drafts")
+            (root / ".decringe").mkdir()
+            (root / ".decringe" / "PRODUCT.md").write_text("Drafts")
             (root / "page.md").write_text("Hero")
             result = context.discover(root, "page.md")
             self.assertEqual(result["records"]["AUDIENCE.md"]["status"], "found")
@@ -107,8 +155,8 @@ class ContextTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             (root / "AUDIENCE.md").write_text("Teachers")
-            (root / ".reader-first").mkdir()
-            (root / ".reader-first" / "audience.md").write_text("Developers")
+            (root / ".decringe").mkdir()
+            (root / ".decringe" / "audience.md").write_text("Developers")
             before = {p: p.read_bytes() for p in root.rglob("*") if p.is_file()}
             result = command(SKILL / "scripts" / "load_context.py", "--root", root)
             self.assertEqual(result.returncode, 1)
@@ -133,7 +181,7 @@ class ContextTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder) / "app"
             root.mkdir()
-            (root / ".reader-first").symlink_to(Path(folder), target_is_directory=True)
+            (root / ".decringe").symlink_to(Path(folder), target_is_directory=True)
             with self.assertRaises(ValueError):
                 context.discover(root)
 
@@ -144,11 +192,60 @@ class ContextTests(unittest.TestCase):
 
 
 class InstallTests(unittest.TestCase):
+    def test_failed_replacement_restores_previous_install(self):
+        with tempfile.TemporaryDirectory() as folder:
+            target = Path(folder) / "skills/decringe"
+            target.mkdir(parents=True)
+            (target / "custom.md").write_text("Preserve this")
+            original_rename = Path.rename
+
+            def rename(path, destination):
+                if path.parent.name.startswith(".decringe-stage-"):
+                    raise OSError("Simulated final rename failure")
+                return original_rename(path, destination)
+
+            with mock.patch.object(Path, "rename", rename):
+                with self.assertRaises(OSError):
+                    installer.install(SKILL, target, update=True)
+            self.assertEqual((target / "custom.md").read_text(), "Preserve this")
+
+    def test_migration_keeps_backups_and_alias_has_no_rule_catalog(self):
+        with tempfile.TemporaryDirectory() as folder:
+            home = Path(folder)
+            target = home / ".agents/skills/decringe"
+            installer.install(SKILL, target)
+            reader = target.parent / "reader-first"
+            reader.mkdir()
+            (reader / "SKILL.md").write_text("Old reader skill")
+            alias = target.parent / "decontaminate"
+            alias.mkdir()
+            (alias / "SKILL.md").write_text("Old cleanup skill")
+            (alias / "rules.md").write_text("Old independent rules")
+            legacy = home / ".codex/skills/decringe"
+            legacy.mkdir(parents=True)
+            (legacy / "SKILL.md").write_text("Old decringe")
+            changes = installer.migrate_legacy(target, legacy)
+            self.assertFalse(reader.exists())
+            self.assertFalse((legacy / "SKILL.md").exists())
+            self.assertFalse((alias / "rules.md").exists())
+            preserved = [Path(x["backup"]) for x in changes if x.get("backup")]
+            self.assertEqual(len(preserved), 3)
+            self.assertTrue(any((p / "rules.md").exists() for p in preserved))
+            self.assertTrue(all(p.parent.name == "decringe-backups" for p in preserved))
+            scanned = command(alias / "check.py", "-", "--json", stdin="Pivotal work.")
+            self.assertEqual(scanned.returncode, 1, scanned.stderr)
+            self.assertEqual(json.loads(scanned.stdout)["profile"], "core")
+            old_path = command(legacy / "scripts/check.py", "-", "--json", stdin="Pivotal work.")
+            self.assertEqual(old_path.returncode, 1, old_path.stderr)
+            self.assertEqual(json.loads(old_path.stdout)["candidates"], json.loads(scanned.stdout)["candidates"])
+            repeated = installer.migrate_legacy(target, legacy)
+            self.assertTrue(all(not x.get("backup") for x in repeated))
+
     def test_two_host_layouts_and_isolated_project_scope(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             paths = installer.destinations("both", "project", root)
-            self.assertEqual(paths, [root.resolve() / ".agents/skills/reader-first", root.resolve() / ".claude/skills/reader-first"])
+            self.assertEqual(paths, [root.resolve() / ".agents/skills/decringe", root.resolve() / ".claude/skills/decringe"])
             for path in paths:
                 self.assertEqual(installer.install(SKILL, path)["status"], "installed")
                 self.assertEqual(installer.install(SKILL, path)["status"], "already installed")
@@ -158,7 +255,7 @@ class InstallTests(unittest.TestCase):
 
     def test_existing_content_survives_refusal_and_update(self):
         with tempfile.TemporaryDirectory() as folder:
-            target = Path(folder) / "with spaces" / "reader-first"
+            target = Path(folder) / "with spaces" / "decringe"
             target.mkdir(parents=True)
             (target / "custom.md").write_text("User-owned copy")
             with self.assertRaises(ValueError):
@@ -206,8 +303,8 @@ class DistributionTests(unittest.TestCase):
             with zipfile.ZipFile(archive) as bundle:
                 self.assertIsNone(bundle.testzip())
                 bundle.extractall(root / "unpacked")
-            release = root / "unpacked" / ("reader-first-" + packager.VERSION)
-            destination = root / "clean install" / "reader-first"
+            release = root / "unpacked" / ("decringe-" + packager.VERSION)
+            destination = root / "clean install" / "decringe"
             result = command(release / "install.py", "--destination", destination, cwd=root)
             self.assertEqual(result.returncode, 0, result.stderr)
             scanned = command(destination / "scripts" / "check.py", "-", "--format", "json", stdin="A seamless platform", cwd=root)

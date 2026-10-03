@@ -12,4 +12,4 @@ Teachers need to know what goes in, whether they can edit the result, how it rea
 
 ## Ownership
 
-Example maintained with Reader First. Last reviewed October 2, 2026.
+Example maintained with Decringe. Last reviewed October 2, 2026.

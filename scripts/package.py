@@ -8,13 +8,13 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 def build(output):
     output = Path(output)
     files = [ROOT / name for name in ("README.md", "LICENSE", "CONTRIBUTING.md", "install.py")]
-    for folder in ("skills", "docs", "examples", "tests", "scripts"):
+    for folder in ("skills", "compat", "docs", "examples", "tests", "scripts"):
         files += [p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"]
     if any(p.is_symlink() for p in files):
         raise ValueError("Release files must not be symlinks")
@@ -22,7 +22,7 @@ def build(output):
     try:
         with zipfile.ZipFile(output, "x", compression=zipfile.ZIP_DEFLATED) as archive:
             for path in sorted(files):
-                archive.write(path, Path("reader-first-" + VERSION) / path.relative_to(ROOT))
+                archive.write(path, Path("decringe-" + VERSION) / path.relative_to(ROOT))
     except Exception:
         # A pre-existing archive must survive a failed exclusive open.
         if "archive" in locals():
@@ -33,7 +33,7 @@ def build(output):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", default=str(ROOT / "dist" / ("reader-first-" + VERSION + ".zip")))
+    parser.add_argument("--output", default=str(ROOT / "dist" / ("decringe-" + VERSION + ".zip")))
     args = parser.parse_args(argv)
     try:
         print(build(args.output))

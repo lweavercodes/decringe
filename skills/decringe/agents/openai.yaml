@@ -1,0 +1,6 @@
+interface:
+  display_name: "Decringe"
+  short_description: "Core decontamination, SaaS copy and UI text"
+  default_prompt: "Use $decringe to clean up this writing and apply saas-copy or ui checks where relevant."
+policy:
+  allow_implicit_invocation: true

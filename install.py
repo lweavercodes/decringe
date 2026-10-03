@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install a self-contained Reader First skill into local Codex or Claude Code."""
+"""Install a self-contained Decringe skill into local Codex or Claude Code."""
 
 import argparse
 from datetime import datetime, timezone
@@ -12,7 +12,20 @@ import tempfile
 import uuid
 
 
-SOURCE = Path(__file__).resolve().parent / "skills" / "reader-first"
+SOURCE = Path(__file__).resolve().parent / "skills" / "decringe"
+COMPAT = Path(__file__).resolve().parent / "compat"
+
+
+def archive(directory):
+    """Move a retired install outside skill discovery, preserving all its files."""
+    directory = Path(directory)
+    if directory.is_symlink() or not directory.is_dir():
+        raise ValueError("Refusing to archive a symlink or non-directory: {}".format(directory))
+    suffix = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
+    backup = directory.parent.parent / "decringe-backups" / (directory.name + "-" + suffix)
+    backup.parent.mkdir(parents=True, exist_ok=True)
+    directory.rename(backup)
+    return backup
 
 
 def release_files(directory):
@@ -50,17 +63,14 @@ def install(source, destination, update=False):
         if not destination.is_dir():
             raise ValueError("Destination must be a directory: {}".format(destination))
     destination.parent.mkdir(parents=True, exist_ok=True)
-    stage = Path(tempfile.mkdtemp(prefix=".reader-first-stage-", dir=destination.parent))
+    stage = Path(tempfile.mkdtemp(prefix=".decringe-stage-", dir=destination.parent))
     backup = None
     try:
-        shutil.copytree(source, stage / "reader-first", ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"))
+        shutil.copytree(source, stage / "decringe", ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"))
         if destination.exists():
-            suffix = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
-            backup = destination.parent.parent / "reader-first-backups" / suffix
-            backup.parent.mkdir(parents=True, exist_ok=True)
-            destination.rename(backup)
+            backup = archive(destination)
         try:
-            (stage / "reader-first").rename(destination)
+            (stage / "decringe").rename(destination)
         except OSError:
             if backup:
                 backup.rename(destination)
@@ -68,6 +78,33 @@ def install(source, destination, update=False):
     finally:
         shutil.rmtree(stage)
     return {"destination": str(destination), "status": "installed", "backup": str(backup) if backup else None}
+
+
+def migrate_legacy(destination, legacy_codex=None):
+    """Explicit migration only; canonical install must already be present."""
+    destination = Path(destination)
+    if not (destination / "SKILL.md").is_file():
+        raise ValueError("Canonical skill must be installed before migration")
+    changes = []
+    old_reader = destination.parent / "reader-first"
+    if old_reader.exists() or old_reader.is_symlink():
+        changes.append({"retired": str(old_reader), "backup": str(archive(old_reader))})
+    alias = destination.parent / "decontaminate"
+    if alias.exists() or alias.is_symlink():
+        changes.append(install(COMPAT / "decontaminate", alias, update=True))
+    if legacy_codex:
+        legacy = Path(legacy_codex)
+        if (legacy / "SKILL.md").exists():
+            backup = archive(legacy)
+            try:
+                shutil.copytree(COMPAT / "legacy-decringe", legacy)
+            except OSError:
+                if legacy.exists():
+                    shutil.rmtree(legacy)
+                backup.rename(legacy)
+                raise
+            changes.append({"retired": str(legacy), "backup": str(backup), "compatibility": "scanner paths only"})
+    return changes
 
 
 def destinations(target, scope, project=None, home=None):
@@ -80,7 +117,7 @@ def destinations(target, scope, project=None, home=None):
             raise ValueError("Project must be an existing directory")
     folders = {"codex": ".agents", "claude": ".claude"}
     choices = folders if target == "both" else [target]
-    return [base / folders[name] / "skills" / "reader-first" for name in choices]
+    return [base / folders[name] / "skills" / "decringe" for name in choices]
 
 
 def main(argv=None):
@@ -90,6 +127,7 @@ def main(argv=None):
     parser.add_argument("--project", help="Project directory (required for project scope)")
     parser.add_argument("--destination", help="Explicit final skill directory; overrides target/scope")
     parser.add_argument("--update", action="store_true", help="Back up a different existing install before replacing")
+    parser.add_argument("--migrate-legacy", action="store_true", help="Archive Reader First, replace existing decontaminate with an alias, and migrate user .codex/decringe")
     args = parser.parse_args(argv)
     try:
         paths = [Path(args.destination)] if args.destination else destinations(args.target, args.scope, args.project)
@@ -98,6 +136,12 @@ def main(argv=None):
             print("{}: {}".format(result["status"], result["destination"]))
             if result["backup"]:
                 print("Previous install preserved: {}".format(result["backup"]))
+            if args.migrate_legacy:
+                legacy_codex = None
+                if not args.destination and args.scope == "user" and path.parent.parent.name == ".agents":
+                    legacy_codex = Path.home() / ".codex" / "skills" / "decringe"
+                for change in migrate_legacy(path, legacy_codex):
+                    print("Migration: {}".format(change))
     except (OSError, ValueError, RuntimeError) as error:
         print("Install error: {}".format(error), file=sys.stderr)
         return 2

@@ -1,6 +1,6 @@
 # Research and product rationale
 
-Reviewed October 2, 2026. This is a qualitative design rationale, not a representative survey, model comparison, or measured conversion study. Reddit posts are self-reports; several authors promote copywriting or audit products. Their commercial incentives and anecdotes are reasons to test the proposed rules, not proof that the rules improve sales.
+Research reviewed October 2, 2026; packaging and rule ownership updated October 3, 2026. This is a qualitative design rationale, not a representative survey, model comparison, or measured conversion study. Reddit posts are self-reports; several authors promote copywriting or audit products. Their commercial incentives and anecdotes are reasons to test the proposed rules, not proof that the rules improve sales.
 
 ## Complaints and counterexamples
 
@@ -16,16 +16,20 @@ The retrieved material supports the broader problem of generic, feature-heavy, o
 
 ## What we borrow from Impeccable
 
-[Impeccable's context documentation](https://impeccable.style/docs/context/) describes reusable product/design records and surface context. Its [public repository](https://github.com/pbakaus/impeccable) supplies focused design workflows. Reader First adopts the organizational idea: one discoverable skill, task-specific modes, compact shared context, and deeper guidance loaded when needed.
+[Impeccable's context documentation](https://impeccable.style/docs/context/) describes reusable product/design records and surface context. Its [public repository](https://github.com/pbakaus/impeccable) supplies focused design workflows. Decringe adopts the organizational idea: one discoverable skill, task-specific modes, compact shared context, and deeper guidance loaded when needed.
 
-Our records focus on reader decisions: `AUDIENCE.md` holds evidence about readers, `PRODUCT.md` holds supported facts, optional `VOICE.md` captures approved examples, and a surface brief selects the task and action. Existing product records can be reused. No visual token system, browser hook, hosted service, or installed Impeccable dependency is needed. The content and scripts here were written for Reader First; no Impeccable source was copied.
+Our records focus on reader decisions: `AUDIENCE.md` holds evidence about readers, `PRODUCT.md` holds supported facts, optional `VOICE.md` captures approved examples, and a surface brief selects the task and action. Existing product records can be reused. No visual token system, browser hook, hosted service, or installed Impeccable dependency is needed. The content and scripts here were written for Decringe; no Impeccable source was copied.
 
 ## Extension beyond decringe
 
-The existing decringe/decontaminate pattern suggests a useful sequence: deterministic candidate scan, contextual decision, scoped edit, and reread. Reader First adds a separate test of audience relevance and factual behavior. This lets it catch a plain but misleading “Done,” a fluent unverified savings claim, or an accurate internal term that the intended reader cannot use.
+The existing decringe/decontaminate pattern suggests a useful sequence: deterministic candidate scan, contextual decision, scoped edit, and reread. Decringe adds a separate test of audience relevance and factual behavior. This lets it catch a plain but misleading “Done,” a fluent unverified savings claim, or an accurate internal term that the intended reader cannot use.
 
 The product hypothesis is that reusable context and explicit decision rules reduce repeated repair work. Validation still requires observing real agent outputs and testing consequential copy with appropriate readers. No scanner score substitutes for that.
 
 ## Portability
 
 Installation follows the current [Codex skill docs](https://learn.chatgpt.com/docs/build-skills) and [Claude Code skill docs](https://code.claude.com/docs/en/skills): the same folder with `SKILL.md` and relative supporting files. Codex UI metadata is isolated in `agents/openai.yaml`; Claude does not need it. Commands are examples of a single skill's mode argument, not provider-specific extensions.
+
+## Consolidation into Decringe v0.2
+
+The initial package was called Reader First. The agreed product name is now Decringe. Its richer legacy decontamination patterns are consolidated into one core; `saas-copy` and `ui` add specialist decisions, not additional general cleanup catalogs. Each rule has one owner. Context and helper tests remain shared; the name change does not add evidence of conversion or cross-model effectiveness.
