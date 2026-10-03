@@ -2,6 +2,8 @@
 
 An open writing skill for Codex and Claude Code: a decontamination core with focused `saas-copy` and `ui` modules.
 
+[Source and change history](https://github.com/lweavercodes/decringe) · [Releases](https://github.com/lweavercodes/decringe/releases)
+
 Decringe helps your agent explain the product in the reader's language, check promises against product facts, and write UI text that matches what actually happens. It also removes canned rhetoric and empty praise while preserving useful voice and technical precision.
 
 **Example:** A teacher does not need “multi-tenant orchestration with a RAG pipeline.” They need to know they can turn lesson notes into a worksheet draft, edit it, and assign it. That translation still needs product evidence: a background queue does not prove the teacher saves three hours.
@@ -29,6 +31,8 @@ The project locations are `.agents/skills/decringe/` and `.claude/skills/decring
 
 Manual installation also works: copy **the entire** `skills/decringe` directory into either environment's skills directory. No symlinks, other skills, API key, Wordflows account, model pin, or network service is required.
 
+The installer also writes a local `.decringe-source.json` hint inside the canonical install, pointing agents to its editable source. It is excluded from releases and ignored by Git; omit it when sharing an installed directory. Manual copies work without it.
+
 These are local agent installs. Web chats and cloud environments need their own supported upload/plugin mechanism. Check the current [Codex skill documentation](https://learn.chatgpt.com/docs/build-skills) and [Claude Code skill documentation](https://code.claude.com/docs/en/skills) if your environment uses a different layout. If the skill does not appear after installation, start a new session.
 
 ## Use
@@ -44,6 +48,7 @@ $decringe ui write an empty state for the worksheet list
 $decringe ui distill this onboarding message to 120 characters
 $decringe saas-copy adapt this page for developer buyers
 $decringe saas-copy+ui audit this complete landing page
+$decringe improve this observed failure in our UI review
 ```
 
 In Claude Code, use `/decringe` with the same arguments. These are arguments to one skill, not separately installed commands. Modules select expertise; operations (`audit`, `write`, `rewrite`, `distill`, `adapt`) select the work. Bare Decringe performs core cleanup. If no module is specified, the agent infers specialist coverage from the requested task. `init` records shared context.
@@ -107,6 +112,12 @@ Migration is opt-in. It preserves retired files in backups outside skill discove
 
 Native content workflows should explicitly invoke Decringe before returning authored output, selecting `saas-copy`, `ui`, or core as appropriate. Every invocation includes core; automatic skill selection alone is not enforcement. This package does not change a workflow application's deployed behavior.
 
+## Improve the skill
+
+There is a [rules.md](skills/decringe/references/rules.md): it indexes rule ownership and links to the canonical core, SaaS and UI guidance. The [maintenance guide](skills/decringe/references/maintenance.md) maps editable files and describes the bounded improvement loop: observed failure → cause/owner → focused change → failure and preservation cases → regressions → commit → refresh copies.
+
+Edit the source checkout's `skills/decringe/` Markdown rather than only an installed copy. SKILL.md points agents to the repository and optional local source hint. Use the [improvement case template](skills/decringe/assets/templates/IMPROVEMENT_CASE.md) to record redacted evidence and actual evaluation results. Ordinary copy work does not silently rewrite the skill; `improve` is for an authorized skill change. Fewer scanner hits or the agent liking its own rewrite is not evidence of a better rule.
+
 ## Development and release
 
 ```sh
@@ -114,7 +125,7 @@ python3 -B -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
 
-The package command creates `dist/decringe-0.2.0.zip` and refuses to overwrite an existing archive. Tests exercise candidate locations, Markdown masking, context ambiguity/isolation, install preservation, and portable packaging. [Behavioral evaluation cases](docs/evaluation.md) cover decisions a regex cannot test. [Research and product rationale](docs/research.md) explain the evidence and its limits.
+The package command creates `dist/decringe-0.2.1.zip` and refuses to overwrite an existing archive. Tests exercise candidate locations, Markdown masking, context ambiguity/isolation, install preservation, and portable packaging. [Behavioral evaluation cases](docs/evaluation.md) cover decisions a regex cannot test. [Research and product rationale](docs/research.md) explain the evidence and its limits.
 
 Change substantive writing rules only when a real failure supports the change. New scanner patterns should be cues for contextual review, accompanied by a false-positive example. Preserve stable rule IDs. Contribution guidance is in [CONTRIBUTING.md](CONTRIBUTING.md).
 

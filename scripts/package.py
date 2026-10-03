@@ -8,14 +8,14 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 
 
 def build(output):
     output = Path(output)
-    files = [ROOT / name for name in ("README.md", "LICENSE", "CONTRIBUTING.md", "install.py")]
+    files = [ROOT / name for name in ("README.md", "LICENSE", "CONTRIBUTING.md", "AGENTS.md", "install.py")]
     for folder in ("skills", "compat", "docs", "examples", "tests", "scripts"):
-        files += [p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"]
+        files += [p for p in (ROOT / folder).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc" and p.name != ".decringe-source.json"]
     if any(p.is_symlink() for p in files):
         raise ValueError("Release files must not be symlinks")
     output.parent.mkdir(parents=True, exist_ok=True)

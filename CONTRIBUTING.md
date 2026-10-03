@@ -2,6 +2,8 @@
 
 Bring a reproducible writing failure, its reader and product context, and a smallest useful repair. Redact customer and private project details.
 
+The canonical source is [lweavercodes/decringe](https://github.com/lweavercodes/decringe). Edit the checkout's `skills/decringe/` resources, then refresh installed copies. The installer records local source locations in `.decringe-source.json`; keep that file out of Git. Follow the [maintenance guide](skills/decringe/references/maintenance.md) and [case template](skills/decringe/assets/templates/IMPROVEMENT_CASE.md) for the source map and iterative evidence-driven improvement process.
+
 For a rule change, explain the reader misunderstanding, the evidence supporting the repair, and an example where the original wording should remain. Preserve existing IDs; use a new ID for a new substantive rule. Avoid global banned-word lists and growing the entrypoint with examples that belong in references.
 
 For helper changes, keep Python 3.9+ and standard-library-only operation. Preserve read-only scanner/context behavior, Unicode positions, bounded context scope, and install backups. Run `python3 -B -m unittest discover -s tests -v`, then exercise the relevant cases in [docs/evaluation.md](docs/evaluation.md) with a fresh agent session when available.

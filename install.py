@@ -4,6 +4,7 @@
 import argparse
 from datetime import datetime, timezone
 import filecmp
+import json
 import os
 from pathlib import Path
 import shutil
@@ -14,6 +15,23 @@ import uuid
 
 SOURCE = Path(__file__).resolve().parent / "skills" / "decringe"
 COMPAT = Path(__file__).resolve().parent / "compat"
+SOURCE_RECORD = ".decringe-source.json"
+REPOSITORY = "https://github.com/lweavercodes/decringe"
+
+
+def record_source(source, destination):
+    """Keep machine-specific editing locations in the installed copy only."""
+    if source.name != "decringe":
+        return
+    root = source.parent.parent
+    metadata = {
+        "schema_version": 1,
+        "repository": REPOSITORY,
+        "source_directory": str(root),
+        "editable_skill_directory": str(source),
+        "is_git_checkout": (root / ".git").exists(),
+    }
+    (destination / SOURCE_RECORD).write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
 
 
 def archive(directory):
@@ -29,7 +47,7 @@ def archive(directory):
 
 
 def release_files(directory):
-    return {p.relative_to(directory) for p in directory.rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc" and p.name != ".DS_Store"}
+    return {p.relative_to(directory) for p in directory.rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc" and p.name != ".DS_Store" and p.relative_to(directory) != Path(SOURCE_RECORD)}
 
 
 def identical(source, destination):
@@ -57,6 +75,7 @@ def install(source, destination, update=False):
         if any(path.is_symlink() for path in destination.rglob("*")):
             raise ValueError("Installed directory contains symlinks; resolve them before updating")
         if identical(source, destination):
+            record_source(source, destination)
             return {"destination": str(destination), "status": "already installed", "backup": None}
         if not update:
             raise ValueError("Destination exists with different content; use --update to preserve it in a backup: {}".format(destination))
@@ -66,7 +85,8 @@ def install(source, destination, update=False):
     stage = Path(tempfile.mkdtemp(prefix=".decringe-stage-", dir=destination.parent))
     backup = None
     try:
-        shutil.copytree(source, stage / "decringe", ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store"))
+        shutil.copytree(source, stage / "decringe", ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store", SOURCE_RECORD))
+        record_source(source, stage / "decringe")
         if destination.exists():
             backup = archive(destination)
         try:

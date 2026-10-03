@@ -21,3 +21,7 @@ Each substantive rule has one owner. The detailed rule and its exceptions live o
 A landing page is not all SaaS text. Map its marketing narrative to SaaS, controls/forms to UI, and apply core everywhere. A pricing-page CTA and its adjacent offer terms may need both modules across different spans; do not make competing edits to the same label.
 
 Scanner profiles load only selected owners plus core. If the task is mixed, select `saas-copy+ui` and use span context to decide the owner of each resulting issue. Multiple candidates or contributing rule IDs do not require multiple findings. Candidate counts are not a measure of writing quality, authorship or conversion.
+
+## Improving the rules
+
+For an authorized skill improvement, follow [maintenance](maintenance.md): capture a redacted observed failure, identify its owner/cause, make the smallest repair, evaluate both the failure and a preservation counterexample, and check relevant regressions. Keep stable IDs and detailed decisions in the owning module. Do not add rules merely because an agent prefers its own output or the scanner count falls. Unrun evaluations stay pending. The maintenance guide supplies editable source locations and a bounded iterative workflow.

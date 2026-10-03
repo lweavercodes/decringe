@@ -192,6 +192,35 @@ class ContextTests(unittest.TestCase):
 
 
 class InstallTests(unittest.TestCase):
+    def test_installed_source_hint_points_to_editable_checkout_and_is_idempotent(self):
+        with tempfile.TemporaryDirectory() as folder:
+            target = Path(folder) / "skills/decringe"
+            installer.install(SKILL, target)
+            record = target / installer.SOURCE_RECORD
+            metadata = json.loads(record.read_text())
+            self.assertEqual(metadata["repository"], installer.REPOSITORY)
+            self.assertEqual(Path(metadata["editable_skill_directory"]), SKILL)
+            self.assertEqual(Path(metadata["source_directory"]), ROOT)
+            self.assertEqual(metadata["is_git_checkout"], (ROOT / ".git").exists())
+            self.assertTrue(installer.identical(SKILL, target))
+            record.write_text("{}")
+            self.assertEqual(installer.install(SKILL, target)["status"], "already installed")
+            self.assertEqual(json.loads(record.read_text()), metadata)
+
+    def test_source_hint_cannot_follow_an_external_symlink(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            target = root / "skills/decringe"
+            installer.install(SKILL, target)
+            external = root / "unrelated.json"
+            external.write_text("Preserve this")
+            record = target / installer.SOURCE_RECORD
+            record.unlink()
+            record.symlink_to(external)
+            with self.assertRaises(ValueError):
+                installer.install(SKILL, target)
+            self.assertEqual(external.read_text(), "Preserve this")
+
     def test_failed_replacement_restores_previous_install(self):
         with tempfile.TemporaryDirectory() as folder:
             target = Path(folder) / "skills/decringe"
@@ -281,6 +310,23 @@ class InstallTests(unittest.TestCase):
 
 
 class DistributionTests(unittest.TestCase):
+    def test_machine_specific_source_hints_do_not_enter_release(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "installed"
+            source.mkdir()
+            marker = source / installer.SOURCE_RECORD
+            marker.write_text('{"source_directory": "/private/local/checkout"}')
+            with mock.patch.object(packager, "ROOT", source):
+                for name in ("README.md", "LICENSE", "CONTRIBUTING.md", "AGENTS.md", "install.py"):
+                    (source / name).write_text("release fixture")
+                skill = source / "skills/decringe"
+                skill.mkdir(parents=True)
+                (skill / installer.SOURCE_RECORD).write_text(marker.read_text())
+                (skill / "SKILL.md").write_text("fixture")
+                output = packager.build(source / "release.zip")
+            with zipfile.ZipFile(output) as archive:
+                self.assertFalse(any(name.endswith(installer.SOURCE_RECORD) for name in archive.namelist()))
+
     def test_markdown_local_links_resolve_and_no_machine_specific_paths(self):
         for path in ROOT.rglob("*.md"):
             if "dist" in path.parts:

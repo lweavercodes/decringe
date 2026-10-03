@@ -24,6 +24,8 @@ Explicit module selection defines scope. Otherwise infer from the requested work
 
 Choose an operation independently: [audit](references/audit.md), [write](references/write.md), [rewrite](references/rewrite.md), [distill](references/distill.md), or [adapt](references/adapt.md). A review is read-only; a fix authorizes the scoped copy edit. Bare `decringe <draft>` means core rewrite. An omitted operation is inferred from the request. [Init](references/init.md) records context and does not rewrite live copy unless requested.
 
+When the user asks to improve Decringe itself, use `improve` and read [maintenance](references/maintenance.md). This updates the skill's rules or resources; it is separate from improving a customer's copy.
+
 Examples of arguments to this one skill (not separate native commands):
 
 ```text
@@ -33,6 +35,7 @@ decringe saas-copy rewrite <hero>
 decringe ui rewrite <component>
 decringe saas-copy+ui audit <landing-page>
 decringe init
+decringe improve <observed-failure>
 ```
 
 ## Establish context
@@ -66,3 +69,11 @@ Follow [output](references/output.md). Lead with finished copy or consequential 
 ## Workflow integration
 
 Every invocation includes the core, including specialist work. Native content workflows should explicitly invoke Decringe at the authored-output boundary with the appropriate module; automatic skill selection alone is not enforcement. Use this same bundled rule set rather than retaining a second decontamination catalog. The optional legacy `decontaminate` alias forwards to this skill and owns no rules.
+
+## Editable source and improvement
+
+Canonical repository: [lweavercodes/decringe](https://github.com/lweavercodes/decringe). Editable skill Markdown lives in the repository's `skills/decringe/` directory. [rules.md](references/rules.md) indexes the single owner of each rule; edit [core.md](references/core.md), [saas-copy.md](references/saas-copy.md), or [ui.md](references/ui.md) for the actual decisions and exceptions. Shared guardrails live in [shared.md](references/shared.md).
+
+For maintenance, check `.decringe-source.json` beside this installed SKILL.md. The installer records the source directory and whether it is a Git checkout. Treat that record as a location hint, verify the repository, and edit the intended source checkout before refreshing installed copies. Manual installs may lack the record; locate or clone the canonical repository or the user's chosen fork. Do not hardcode another user's local path.
+
+Follow [maintenance](references/maintenance.md) for the complete editable-file map and bounded evidence → rule change → evaluation → regression check loop. Ordinary writing jobs do not authorize rewriting the skill or silently learning new global bans from their own output.
