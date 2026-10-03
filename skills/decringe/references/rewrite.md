@@ -9,3 +9,5 @@ Rewrite at the smallest scale that solves the problem. Preserve meaning, useful 
 If editing UI files, use the requested app's existing copy/i18n structure. Inspect the string's use, interpolation variables, pluralization, and actual handler/state. Do not rename keys, routes, backend fields, or change product behavior to make a proposed label true. Report behavior mismatches separately.
 
 Reread the finished surface and compare its factual claims with the original and context. Scan substantial drafts again once. Deliver changed paths or the replacement text, then briefly explain consequential changes and remaining assumptions.
+
+Follow [reviewer](reviewer.md) for the explicit delegated semantic pass, correction and recheck. The local scan does not replace it. For an audit, stop at findings without editing.

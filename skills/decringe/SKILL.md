@@ -11,7 +11,7 @@ Apply to authored deliverables: landing pages, emails, articles, scripts, social
 
 ## Route the request
 
-Read [core](references/core.md) and [shared constraints](references/shared.md) on every invocation. Select the expertise separately from the operation:
+Apply [shared constraints](references/shared.md) on every invocation. The semantic reviewer receives the complete [reviewer rulebook](references/REVIEW_RULES.md), including core. Read [core](references/core.md) directly for authoring guidance or self-review when needed. Select the expertise separately from the operation:
 
 | Module | Trigger | Additional guidance |
 | --- | --- | --- |
@@ -50,29 +50,26 @@ python3 <skill-dir>/scripts/load_context.py --root <project-root> --brief <brief
 
 Resolve `<skill-dir>` from this loaded SKILL.md; omit absent brief arguments. Inspect ambiguities, do not silently mix applications. Ask only when an unknown fact materially changes the result; otherwise proceed conservatively and state the assumption outside the copy.
 
-## Review once, edit coherently
+## Required semantic review, then correction
 
-1. Map each span to its task. Core checks language everywhere. SaaS checks offer/reader decisions. UI checks controls and interaction states, including on a marketing page.
-2. Scan substantial visible text if Python is available, selecting the relevant profile:
+Follow [reviewer](references/reviewer.md) for every authored draft being audited or delivered. **Use a lightweight, explicitly selected subagent for the semantic review when available and permitted.** Send the complete [REVIEW_RULES.md](references/REVIEW_RULES.md), exact draft, selected modules, audience/product/voice context and optional scanner results. The reviewer returns violations with rule IDs, verbatim snippets, reasons and supported repairs; it reviews paraphrased moves and unflagged text too. A Python scan is an auxiliary check, never a replacement for this model review.
 
-   ```sh
-   python3 <skill-dir>/scripts/check.py <copy.md> --profile saas-copy+ui --format json
-   ```
+1. Establish the draft and constraints; map marketing text to SaaS and controls/states to UI. Core applies throughout.
+2. Scan substantial visible prose with `scripts/check.py` when Python is available, using the selected profile. See [scanner](references/scanner.md); extract visible strings from source rather than scanning identifiers as copy.
+3. Delegate the explicit semantic review using the available host tool with a suitable lower-cost model. Select that model explicitly rather than silently inheriting Sol/Astra/Opus; see the host-aware selection and fallback in [reviewer](references/reviewer.md). Do not assume an API Mini model exists in a subscription's model list. In a constrained host, perform the same explicit rulebook review yourself and disclose the fallback; do not omit the semantic pass.
+4. Wait for and validate the report: exact quotes, selected rule IDs, complete coverage, product truth and preservation constraints. Consolidate overlapping findings. For `audit`, report findings without editing.
+5. For writing/editing operations, apply supported fixes coherently. Correct directly or send accepted findings to the same subagent for corrected copy; a separate editor is optional. The parent applies files and checks behavior, facts, qualifications and functional strings.
+6. After material corrections, request a semantic recheck of the revised draft, reuse the reviewer where possible, and rescan substantial text. At most three semantic review rounds total; report unresolved issues. Final parent verification still applies.
 
-   Default profile is `core`; every profile includes core patterns. Read [scanner](references/scanner.md) for limitations and exit codes. Scan extracted prose, not source identifiers as published copy.
-3. Judge candidates and unflagged meaning using the selected references. Findings are hypotheses, not AI detection or a quality score. Useful words, contrasts, repetition and punctuation can stay. Zero hits still requires contextual review.
-4. Use the rule's single owner. When overlapping candidates describe one problem, report one finding and one repair. Action-label correctness belongs to UI; offer conditions and buyer commitment belong to SaaS; generic rhetoric belongs to core. See [ownership index](references/rules.md).
-5. Make one coherent edit for the authorized operation. Apply final core cleanup to any new wording, then compare facts, qualifications, voice and behavior with the original/context. Rescan substantial revisions once; repeat only for unresolved issues, at most three meaningful passes. Do not rewrite separately for each module or optimize for an empty scan.
-
-Follow [output](references/output.md). Lead with finished copy or consequential findings, identify changed files versus suggestions, and state actual verification limits. Tiny edits need proportionate responses.
+Follow [output](references/output.md). Lead with finished copy or consequential findings; identify actual review method/model where known and verification limits. `init` records context and `improve` maintains the skill; neither requires reviewing this skill's instructional Markdown as customer prose.
 
 ## Workflow integration
 
-Every invocation includes the core, including specialist work. Native content workflows should explicitly invoke Decringe at the authored-output boundary with the appropriate module; automatic skill selection alone is not enforcement. Use this same bundled rule set rather than retaining a second decontamination catalog. The optional legacy `decontaminate` alias forwards to this skill and owns no rules.
+Every invocation includes the core, including specialist work. Native content workflows should explicitly invoke Decringe at the authored-output boundary with the appropriate module; automatic skill selection alone is not enforcement. Use the same bundled semantic reviewer protocol and rulebook rather than retaining a second decontamination catalog. The optional legacy `decontaminate` alias forwards to this skill and owns no rules.
 
 ## Editable source and improvement
 
-Canonical repository: [lweavercodes/decringe](https://github.com/lweavercodes/decringe). Editable skill Markdown lives in the repository's `skills/decringe/` directory. [rules.md](references/rules.md) indexes the single owner of each rule; edit [core.md](references/core.md), [saas-copy.md](references/saas-copy.md), or [ui.md](references/ui.md) for the actual decisions and exceptions. Shared guardrails live in [shared.md](references/shared.md).
+Canonical repository: [lweavercodes/decringe](https://github.com/lweavercodes/decringe). Editable skill Markdown lives in the repository's `skills/decringe/` directory. [rules.md](references/rules.md) indexes the single owner of each rule; edit [core.md](references/core.md), [saas-copy.md](references/saas-copy.md), or [ui.md](references/ui.md) for the actual decisions and exceptions. Shared guardrails live in [shared.md](references/shared.md). The complete model-facing [REVIEW_RULES.md](references/REVIEW_RULES.md) is generated from those canonical files; after edits, run `python3 skills/decringe/scripts/build_review_rules.py` from the repository root. Reviewer delegation/report/correction instructions live in [reviewer.md](references/reviewer.md).
 
 For maintenance, check `.decringe-source.json` beside this installed SKILL.md. The installer records the source directory and whether it is a Git checkout. Treat that record as a location hint, verify the repository, and edit the intended source checkout before refreshing installed copies. Manual installs may lack the record; locate or clone the canonical repository or the user's chosen fork. Do not hardcode another user's local path.
 

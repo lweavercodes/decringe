@@ -8,6 +8,8 @@ Each substantive rule has one owner. The detailed rule and its exceptions live o
 | SaaS copy | COPY-01 through COPY-09 | [saas-copy](saas-copy.md) |
 | UI | UX-01 through UX-07 | [ui](ui.md) |
 
+For the model review, send [REVIEW_RULES.md](REVIEW_RULES.md): one complete, self-contained rulebook generated from the canonical shared/core/SaaS/UI files. It includes every legacy tell card, applicable rules, repairs and preservation exceptions. Follow [reviewer](reviewer.md) for lightweight subagent selection, the violation report, correction and semantic recheck. This index alone is not enough for the review.
+
 ## Boundary cases
 
 - Empty language such as “effortlessly revolutionize” → core. A product's capabilities still fail to explain why it fits the reader → SaaS.

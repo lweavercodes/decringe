@@ -7,3 +7,5 @@ Remove repeated reassurance, introductions, empty intensifiers, duplicated benef
 Do not meet a character limit by hiding the catch in a tooltip or changing meaning. If the essential message cannot fit, give the shortest accurate version and explain the space constraint. Count characters with the actual interpolation/locale in mind; do not claim rendered fit without inspecting the surface.
 
 Keep enough surrounding language to sound natural. Brevity is not a contest to remove articles or warmth. Return the shortened copy and any material information moved elsewhere. Run the claim and action checks even when the scanner finds nothing.
+
+Follow [reviewer](reviewer.md) for the explicit delegated semantic pass, correction and recheck. The local scan does not replace it. For an audit, stop at findings without editing.

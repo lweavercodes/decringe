@@ -22,6 +22,9 @@ Paths below are relative to the source repository root. The skill files are bund
 | SaaS offer, reader relevance, proof and buyer decision | `skills/decringe/references/saas-copy.md` |
 | Labels, controls, states, consequences and recovery | `skills/decringe/references/ui.md` |
 | Shared truth, scope and functional-text constraints | `skills/decringe/references/shared.md` |
+| Complete model-facing rulebook (generated; do not edit directly) | `skills/decringe/references/REVIEW_RULES.md`; rebuild with `python3 skills/decringe/scripts/build_review_rules.py` |
+| Reviewer model selection, packet, report, correction and recheck | `skills/decringe/references/reviewer.md` |
+| Rulebook generation and freshness | `skills/decringe/scripts/build_review_rules.py` |
 | Context ownership and discovery conventions | `skills/decringe/references/context.md` |
 | Audit/write/rewrite/distill/adapt/init/output behavior | Corresponding Markdown under `skills/decringe/references/` |
 | Deterministic candidate cues and count thresholds | `skills/decringe/references/patterns.json` |
@@ -33,7 +36,7 @@ Paths below are relative to the source repository root. The skill files are bund
 | Helper regression tests | `tests/test_helpers.py` |
 | Contribution/source workflow | `AGENTS.md`, `CONTRIBUTING.md` |
 
-`rules.md` is the ownership index, not a second complete catalog. Change the owning module's decision and exceptions in one place. Update the index only when ownership/IDs change. Scanner cues are not the definition of good writing.
+`rules.md` is the ownership index, not a second complete catalog. Change the owning module's decision and exceptions in one place. Update the index only when ownership/IDs change. Scanner cues are not the definition of good writing. `REVIEW_RULES.md` is a generated compilation for one model handoff, not an independently maintained catalog. Rebuild it after any shared/core/SaaS/UI change and check freshness with `python3 skills/decringe/scripts/build_review_rules.py --check`.
 
 ## Evidence-driven improvement loop
 
@@ -41,7 +44,7 @@ Paths below are relative to the source repository root. The skill files are bund
 2. **Classify the cause.** Was routing wrong, context missing, a product fact ignored, the rule ambiguous, or the implementation broken? A caller's missing product fact does not justify a universal writing ban. A correct technical term flagged by regex may need a preservation example rather than another detection pattern.
 3. **Choose one owner and the smallest repair.** Fix the relevant module, shared guardrail or routing instruction. Preserve stable IDs. Include the circumstance in which similar language should stay. Change candidate patterns only when a deterministic cue adds value; semantic failures do not automatically need a regex.
 4. **Evaluate decisions.** Run the failure case and a counterexample with the candidate skill in an isolated workspace or fresh session when available and authorized. Withhold expected wording from an independent evaluator. Score the required decision, truth, constraints and owner selection, not exact sentences or lower candidate counts. Helper tests alone cannot establish model behavior.
-5. **Check regressions and iterate narrowly.** Exercise relevant cases from `docs/evaluation.md`; run `python3 -B -m unittest discover -s tests -v` from the repository root when resources/helpers or packaging change. Compare against the prior result. An unrun behavioral case is pending, not a pass. For an open-ended improvement request without a specified budget, use at most three evidence-based iterations, then report unresolved decisions rather than accumulating speculative rules.
+5. **Check regressions and iterate narrowly.** Regenerate the reviewer rulebook after canonical rule changes. Exercise relevant cases from `docs/evaluation.md`; run `python3 -B -m unittest discover -s tests -v` from the repository root when resources/helpers or packaging change. Compare against the prior result. An unrun behavioral case is pending, not a pass. For an open-ended improvement request without a specified budget, use at most three evidence-based iterations, then report unresolved decisions rather than accumulating speculative rules.
 6. **Record the change.** Keep the reproducible case, observed result, scope/limitations and rationale in the appropriate development files. Commit the focused change using a conventional message. Push or publish only within the user's existing authorization; do not treat this guide as permission for external actions.
 7. **Refresh copies.** After validation, run the repository installer with `--update` for the environments in scope. It preserves previous installs and refreshes their source hints. Bump the release version when making a release, build a new archive, and preserve prior releases.
 

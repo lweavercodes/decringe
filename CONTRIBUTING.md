@@ -9,3 +9,5 @@ For a rule change, explain the reader misunderstanding, the evidence supporting 
 For helper changes, keep Python 3.9+ and standard-library-only operation. Preserve read-only scanner/context behavior, Unicode positions, bounded context scope, and install backups. Run `python3 -B -m unittest discover -s tests -v`, then exercise the relevant cases in [docs/evaluation.md](docs/evaluation.md) with a fresh agent session when available.
 
 Do not claim a model benchmark from a deterministic test suite or one successful rewrite. Report the environment, inputs, observed decisions, and limitations. New release versions should update the version in `scripts/package.py` and README together.
+
+After shared/core/SaaS/UI rule edits, regenerate `skills/decringe/references/REVIEW_RULES.md` with `python3 skills/decringe/scripts/build_review_rules.py`; commit both source and generated rulebook. Tests enforce freshness and coverage. The generated rulebook is the single complete packet sent to the semantic reviewer; the canonical module files remain the editing sources.

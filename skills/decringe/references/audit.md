@@ -9,3 +9,5 @@ Prioritize issues that alter a reader's decision: false promises, misleading act
 Use [output](output.md). Give each issue a location, quoted span, rule ID, reader consequence, evidence, and a concrete repair or precise verification question. State coverage: supplied excerpt, whole page, inspected states, and unavailable paths. Avoid fake scores, AI percentages, and universal conversion predictions.
 
 It is valid to find no material issues. Explain the scope checked and remaining verification gap without inventing nits.
+
+Follow [reviewer](reviewer.md) for the explicit delegated semantic pass, correction and recheck. The local scan does not replace it. For an audit, stop at findings without editing.

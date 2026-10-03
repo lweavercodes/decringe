@@ -19,3 +19,5 @@ For edits, identify changed files or supply the replacement copy, explain materi
 Put assumptions and editorial notes outside publishable copy. Do not bury an unverified promise inside a draft with a vague final disclaimer. For a small edit, one replacement and a short qualification may be sufficient.
 
 For mixed work, identify the primary owner (`core`, `saas-copy`, or `ui`) and consolidate overlapping candidates into one finding/repair. Distinct issues may share a sentence, but do not count a style symptom again when its specialist repair resolves it. Report module and surface coverage so a core-only pass is not mistaken for an offer or interaction audit.
+
+Identify the semantic review method briefly: delegated reviewer or explicit self-review fallback, requested/actual model when known, selected modules, and unresolved coverage. Do not imply the revised draft was reviewed if only the original was checked. A scanner result alone is not a semantic-review report.

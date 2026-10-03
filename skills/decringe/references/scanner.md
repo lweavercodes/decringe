@@ -1,6 +1,6 @@
 # Scanner contract
 
-`scripts/check.py` is a read-only candidate finder using the Python standard library (Python 3.9+). It calls no models, reads no environment secrets, and makes no network requests. The host agent supplies contextual judgment.
+`scripts/check.py` is a read-only candidate finder using the Python standard library (Python 3.9+). It calls no models, reads no environment secrets, and makes no network requests. The explicit model review in [reviewer](reviewer.md) is required even when the scanner reports zero candidates. Prefer a lightweight subagent; disclose self-review when host limits require it.
 
 ```sh
 python3 <skill-dir>/scripts/check.py copy.md
@@ -24,6 +24,6 @@ The context loader separately reports named context records. It does not determi
 
 `--profile core` is the default. `--profile saas-copy`, `--profile ui`, and `--profile saas-copy+ui` add the selected specialist(s), always retaining core. Profiles select cues, not an automatic verdict or routing for every span: contextual review must map controls to UI and marketing text to SaaS. Exact duplicate locations within one owner are emitted once; the agent consolidates overlapping or cross-owner cues into a single substantive finding where appropriate.
 
-`--json` remains an alias for `--format json`. Count-based cadence candidates such as repeated em-dash pauses appear only when the configured threshold is met, and still need judgment. Legacy forwarding scripts add `--fail-on-candidates` to preserve their old exit status. API-backed `--semantic` and `--voice` flags are not implemented by the offline scanner; contextual/voice review belongs to the host agent. No model choice is silently substituted.
+`--json` remains an alias for `--format json`. Count-based cadence candidates such as repeated em-dash pauses appear only when the configured threshold is met, and still need judgment. Legacy forwarding scripts add `--fail-on-candidates` to preserve their old exit status. API-backed `--semantic` and `--voice` flags are not implemented by the offline scanner; contextual/voice review uses the separate delegated model-review protocol and supplied voice context. No model choice is silently substituted.
 
 The context loader also recognizes `.reader-first/` records for migration compatibility. Conflicts with `.decringe/` remain ambiguous; it does not rename files or silently prefer the new folder.

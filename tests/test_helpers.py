@@ -27,6 +27,7 @@ checker = load("decringe_checker", SKILL / "scripts" / "check.py")
 context = load("decringe_context", SKILL / "scripts" / "load_context.py")
 installer = load("decringe_installer", ROOT / "install.py")
 packager = load("decringe_packager", ROOT / "scripts" / "package.py")
+rulebook = load("decringe_rulebook", SKILL / "scripts" / "build_review_rules.py")
 
 
 def command(script, *args, stdin=None, cwd=None):
@@ -309,6 +310,43 @@ class InstallTests(unittest.TestCase):
             installer.install(SKILL, SKILL / "nested")
 
 
+class RulebookTests(unittest.TestCase):
+    def test_bundled_rulebook_matches_all_canonical_sources(self):
+        references = SKILL / "references"
+        self.assertEqual((references / rulebook.OUTPUT).read_text(encoding="utf-8"), rulebook.render())
+        result = command(SKILL / "scripts/build_review_rules.py", "--check")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_every_scanner_owner_and_legacy_tell_has_review_guidance(self):
+        references = SKILL / "references"
+        catalog = json.loads((references / "patterns.json").read_text())
+        complete = rulebook.render()
+        owners = {"core": "core.md", "saas-copy": "saas-copy.md", "ui": "ui.md"}
+        for cue in catalog["patterns"]:
+            self.assertIn(cue["rule"], (references / owners[cue["module"]]).read_text())
+            self.assertIn(cue["rule"], complete)
+            if cue.get("pattern_id"):
+                self.assertIn("`{}`".format(cue["pattern_id"]), complete)
+
+    def test_regeneration_reflects_rule_changes_without_mutating_sources(self):
+        with tempfile.TemporaryDirectory() as folder:
+            references = Path(folder)
+            originals = {}
+            for name in rulebook.SOURCES:
+                text = "# {}\n\nKeep [facts](shared.md).\n".format(name)
+                (references / name).write_text(text)
+                originals[name] = text
+            before = rulebook.render(references)
+            with (references / "core.md").open("a") as source:
+                source.write("\nA newly verified exception.\n")
+            after = rulebook.render(references)
+            self.assertNotEqual(before, after)
+            self.assertIn("A newly verified exception.", after)
+            self.assertNotIn("](shared.md)", after)
+            for name, original in originals.items():
+                self.assertEqual((references / name).read_text(), original + ("\nA newly verified exception.\n" if name == "core.md" else ""))
+
+
 class DistributionTests(unittest.TestCase):
     def test_machine_specific_source_hints_do_not_enter_release(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -356,6 +394,9 @@ class DistributionTests(unittest.TestCase):
             scanned = command(destination / "scripts" / "check.py", "-", "--format", "json", stdin="A seamless platform", cwd=root)
             self.assertEqual(scanned.returncode, 0, scanned.stderr)
             self.assertTrue(json.loads(scanned.stdout)["candidates"])
+            installed_rules = destination / "references"
+            self.assertEqual((installed_rules / rulebook.OUTPUT).read_text(), rulebook.render(installed_rules))
+            self.assertTrue((installed_rules / "reviewer.md").is_file())
             tested = command(release / "scripts" / "package.py", "--output", root / "repacked.zip", cwd=root)
             self.assertEqual(tested.returncode, 0, tested.stderr)
 

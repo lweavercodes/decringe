@@ -7,3 +7,5 @@ For each important promise, identify the fact or supplied evidence that supports
 Draft the structure that the reader's decision requires. Do not force every page into a pain-agitate-solution formula, a fixed count of benefits, or a startup landing-page template. Include restrictions near the claim they qualify. On a UI surface, write the relevant state and action together.
 
 Perform contextual review and the optional scan. Deliver ready-to-use copy with unresolved editorial notes separated. Where file editing is requested, use the project's copy/i18n conventions and inspect enough surrounding code to avoid changing behavior or text keys.
+
+Follow [reviewer](reviewer.md) for the explicit delegated semantic pass, correction and recheck. The local scan does not replace it. For an audit, stop at findings without editing.

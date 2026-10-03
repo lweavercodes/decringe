@@ -18,7 +18,7 @@ Backups live in `decringe-backups/` beside the relevant `skills/` directory. Exa
 
 - Existing explicit `decontaminate` requests load the sibling canonical skill. The alias owns no writing rules. Codex implicit selection is disabled in its UI metadata; Claude uses its documented `disable-model-invocation` field. See [Claude invocation controls](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill).
 - Legacy offline scanner paths forward to the canonical script, accept `--json`, and retain candidate-present exit code 1. They do not preserve the old JSON schema or API-backed semantic flags.
-- New scanner output is schema version 2 with an owner and selected profile. Update any consumer that parses old scanner JSON. `--semantic`/`--voice` API flags fail explicitly; contextual/voice review occurs in the host agent rather than silently switching models.
+- New scanner output is schema version 2 with an owner and selected profile. Update any consumer that parses old scanner JSON. `--semantic`/`--voice` API flags fail explicitly; contextual/voice review follows the explicit lightweight-subagent protocol with the complete bundled rulebook. Host restrictions require disclosed self-review rather than silently switching models.
 - Existing `.reader-first/` context is readable alongside `.decringe/`. Conflicting records are flagged; no context file is automatically renamed or merged.
 
 ## Native workflows

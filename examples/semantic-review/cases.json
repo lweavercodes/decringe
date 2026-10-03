@@ -1,0 +1,186 @@
+[
+  {
+    "source": "article",
+    "modules": "core",
+    "context": {
+      "audience": "Freelance writers",
+      "facts": "No studies or customer anecdotes supplied. Review this introductory paragraph without changing files."
+    },
+    "draft": "People assume success comes from longer hours. They have missed the point. The real secret is a transformed mindset.",
+    "scanner": {
+      "schema_version": 2,
+      "source": "article",
+      "profile": "core",
+      "modules": [
+        "core"
+      ],
+      "candidates": [],
+      "summary": {
+        "candidate_count": 0,
+        "contextual_review_required": true
+      }
+    }
+  },
+  {
+    "source": "developer-copy",
+    "modules": "saas-copy",
+    "context": {
+      "audience": "PostgreSQL operators evaluating CDC software",
+      "facts": "Logical replication, at-least-once delivery, encryption in transit and at rest are verified. No throughput study. The author intentionally uses the encryption contrast."
+    },
+    "draft": "PostgreSQL logical replication with at-least-once delivery. It isn't just encrypted in transit. It's encrypted at rest too.",
+    "scanner": {
+      "schema_version": 2,
+      "source": "developer-copy",
+      "profile": "saas-copy",
+      "modules": [
+        "core",
+        "saas-copy"
+      ],
+      "candidates": [
+        {
+          "module": "saas-copy",
+          "rule": "COPY-01",
+          "candidate": "Technical mechanism may need translation for this reader",
+          "match": "PostgreSQL",
+          "line": 1,
+          "column": 1,
+          "start": 0,
+          "end": 10
+        },
+        {
+          "module": "core",
+          "rule": "STYLE-02",
+          "candidate": "Not X but Y reframe may be a synthetic rhetorical move",
+          "match": "It isn't just encrypted in transit. It's",
+          "line": 1,
+          "column": 61,
+          "start": 60,
+          "end": 100
+        },
+        {
+          "module": "core",
+          "rule": "STYLE-02",
+          "candidate": "Canned contrast may replace a useful distinction",
+          "match": "isn't just",
+          "line": 1,
+          "column": 64,
+          "start": 63,
+          "end": 73
+        }
+      ],
+      "summary": {
+        "candidate_count": 3,
+        "contextual_review_required": true
+      }
+    }
+  },
+  {
+    "source": "ui-states",
+    "modules": "ui",
+    "context": {
+      "audience": "Teachers",
+      "facts": "Completion event marks the current worksheet item complete; the export remains processing. Save failed, cause and local draft retention are unknown; a retry button exists. The button below archives a project; records remain and restoration is supported."
+    },
+    "draft": "Completion message: Everything is ready.\nSave error: Your connection dropped. Your work is safe.\nProject button: Delete project",
+    "scanner": {
+      "schema_version": 2,
+      "source": "ui-states",
+      "profile": "ui",
+      "modules": [
+        "core",
+        "ui"
+      ],
+      "candidates": [
+        {
+          "module": "ui",
+          "rule": "UX-04",
+          "candidate": "Cause, data retention, or staffed response needs verification",
+          "match": "Your work is safe",
+          "line": 2,
+          "column": 38,
+          "start": 78,
+          "end": 95
+        }
+      ],
+      "summary": {
+        "candidate_count": 1,
+        "contextual_review_required": true
+      }
+    }
+  },
+  {
+    "source": "teacher-offer",
+    "modules": "saas-copy",
+    "context": {
+      "audience": "Independent teachers choosing a worksheet tool",
+      "facts": "Upload lesson notes, generate worksheet drafts, edit and assign them. Teacher review is required. No measured time savings or accuracy study. Trial is 14 days with a required payment card, then $12/month unless canceled. Current cap is five drafts per month."
+    },
+    "draft": "Multi-tenant orchestration for seamless teaching. Generate 100% accurate worksheets and save 3 hours every week.\nTry it for 14 days with a payment card, then $12/month unless canceled. Includes five drafts per month.",
+    "scanner": {
+      "schema_version": 2,
+      "source": "teacher-offer",
+      "profile": "saas-copy",
+      "modules": [
+        "core",
+        "saas-copy"
+      ],
+      "candidates": [
+        {
+          "module": "saas-copy",
+          "rule": "COPY-01",
+          "candidate": "Technical mechanism may need translation for this reader",
+          "match": "Multi-tenant",
+          "line": 1,
+          "column": 1,
+          "start": 0,
+          "end": 12
+        },
+        {
+          "module": "saas-copy",
+          "rule": "COPY-01",
+          "candidate": "Technical mechanism may need translation for this reader",
+          "match": "orchestration",
+          "line": 1,
+          "column": 14,
+          "start": 13,
+          "end": 26
+        },
+        {
+          "module": "core",
+          "rule": "STYLE-03",
+          "candidate": "Broad benefit may conceal the actual capability",
+          "match": "seamless",
+          "line": 1,
+          "column": 32,
+          "start": 31,
+          "end": 39
+        },
+        {
+          "module": "saas-copy",
+          "rule": "COPY-05",
+          "candidate": "Promise needs evidence and scope",
+          "match": "100%",
+          "line": 1,
+          "column": 60,
+          "start": 59,
+          "end": 63
+        },
+        {
+          "module": "saas-copy",
+          "rule": "COPY-05",
+          "candidate": "Promise needs evidence and scope",
+          "match": "save 3 hours",
+          "line": 1,
+          "column": 89,
+          "start": 88,
+          "end": 100
+        }
+      ],
+      "summary": {
+        "candidate_count": 5,
+        "contextual_review_required": true
+      }
+    }
+  }
+]

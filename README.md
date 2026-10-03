@@ -79,6 +79,16 @@ Files may live at the selected app root or under `.decringe/`. Existing `.reader
 
 Start with the [templates](skills/decringe/assets/templates/) or the complete [fictional example](examples/lesson-draft/). The [context guide](skills/decringe/references/context.md) explains ownership, evidence, and resolution.
 
+## Semantic review, correction and recheck
+
+Decringe requires a model-based semantic review for authored drafts; regex matches alone are not the review. The parent sends the exact text, selected modules, relevant audience/product/voice facts, and the complete [REVIEW_RULES.md](skills/decringe/references/REVIEW_RULES.md) to one lightweight reviewer subagent. The rulebook includes all 21 legacy tell cards, shared constraints, core decisions and SaaS/UI checks in one file. The local scanner supplies optional leads.
+
+The reviewer returns quoted violations, applicable rule IDs, reasons, preservation constraints and supported repair suggestions. For an audit, the parent reports findings without editing. For a rewrite or new draft, it validates findings and corrects the copy itself or asks the same subagent for corrections. Material revisions receive a semantic recheck, with at most three review rounds total. The parent checks facts and functional strings before applying files.
+
+Model selection is explicit: prefer a user-selected lightweight reviewer, an available Luna-class model in Codex, or `haiku` in Claude Code. The skill uses the host's actual subagent tool, not Wordflows or a separately billed API. It does not change the main model or global settings. Availability/policies can prevent cheaper delegation; then it performs the same explicit review on the current model and reports the fallback. If a user requires independent review without fallback, an unavailable reviewer is a blocker. See the [reviewer protocol](skills/decringe/references/reviewer.md) for packet/prompt, model-selection rules and report contract.
+
+Subagents consume tokens and subscription limits; savings are not guaranteed. An unreported model substitution is not evidence of cheaper review.
+
 ## What it checks
 
 - Technical implementation used where the reader needs a task or offer.
@@ -116,16 +126,17 @@ Native content workflows should explicitly invoke Decringe before returning auth
 
 There is a [rules.md](skills/decringe/references/rules.md): it indexes rule ownership and links to the canonical core, SaaS and UI guidance. The [maintenance guide](skills/decringe/references/maintenance.md) maps editable files and describes the bounded improvement loop: observed failure → cause/owner → focused change → failure and preservation cases → regressions → commit → refresh copies.
 
-Edit the source checkout's `skills/decringe/` Markdown rather than only an installed copy. SKILL.md points agents to the repository and optional local source hint. Use the [improvement case template](skills/decringe/assets/templates/IMPROVEMENT_CASE.md) to record redacted evidence and actual evaluation results. Ordinary copy work does not silently rewrite the skill; `improve` is for an authorized skill change. Fewer scanner hits or the agent liking its own rewrite is not evidence of a better rule.
+Edit the source checkout's `skills/decringe/` Markdown rather than only an installed copy. Regenerate the complete reviewer rulebook after module/shared-rule edits with `python3 skills/decringe/scripts/build_review_rules.py`; do not edit the generated packet independently. SKILL.md points agents to the repository and optional local source hint. Use the [improvement case template](skills/decringe/assets/templates/IMPROVEMENT_CASE.md) to record redacted evidence and actual evaluation results. Ordinary copy work does not silently rewrite the skill; `improve` is for an authorized skill change. Fewer scanner hits or the agent liking its own rewrite is not evidence of a better rule.
 
 ## Development and release
 
 ```sh
+python3 skills/decringe/scripts/build_review_rules.py --check
 python3 -B -m unittest discover -s tests -v
 python3 scripts/package.py
 ```
 
-The package command creates `dist/decringe-0.2.1.zip` and refuses to overwrite an existing archive. Tests exercise candidate locations, Markdown masking, context ambiguity/isolation, install preservation, and portable packaging. [Behavioral evaluation cases](docs/evaluation.md) cover decisions a regex cannot test. [Research and product rationale](docs/research.md) explain the evidence and its limits.
+The package command creates `dist/decringe-0.3.0.zip` and refuses to overwrite an existing archive. Tests exercise candidate locations, Markdown masking, context ambiguity/isolation, install preservation, and portable packaging. [Behavioral evaluation cases](docs/evaluation.md) cover decisions a regex cannot test. [Research and product rationale](docs/research.md) explain the evidence and its limits.
 
 Change substantive writing rules only when a real failure supports the change. New scanner patterns should be cues for contextual review, accompanied by a false-positive example. Preserve stable rule IDs. Contribution guidance is in [CONTRIBUTING.md](CONTRIBUTING.md).
 

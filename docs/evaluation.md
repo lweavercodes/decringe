@@ -2,7 +2,7 @@
 
 The automated tests validate helpers and package integrity. They do not prove the host model follows instructions. Use these cases in a fresh Codex or Claude Code session to evaluate actual behavior before changing substantive guidance or claiming a model benchmark.
 
-Give the agent the installed skill and the **input/request** from a case, with the context files described. Withhold expected decisions while it works. Use a temporary workspace; permit only the case's edits. Save the output, model/environment, date, actual file changes, and the reviewer judgment. Review decisions rather than exact sentences. These cases are a maintained test plan, not a claim that independent sessions have been run.
+Give the agent the installed skill and the **input/request** from a case, with the context files described. Withhold expected decisions while it works. Use a temporary workspace; permit only the case's edits. Save the output, model/environment, date, actual file changes, and the reviewer judgment. Review decisions rather than exact sentences. These cases are a maintained test plan. The focused delegated smoke run below records its actual coverage separately; it does not establish that this whole matrix has been run.
 
 | Case | Input/request | Expected decisions |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ Give the agent the installed skill and the **input/request** from a case, with t
 
 Mark each expected decision pass/fail/not observable. A fluent rewrite fails if it invents a claim or drops a material qualification. A correctly preserved technical term passes even if candidate count stays unchanged. Record partial coverage: a text review does not validate rendered fit, every state, localization, or live routes.
 
-Fix demonstrated failures at the relevant rule or mode reference; do not add a universal ban from one anecdote. For wider effectiveness claims, use representative real projects and appropriate reader testing. This release has helper tests and an authored example; independent cross-model and conversion evaluation remains future work.
+Fix demonstrated failures at the relevant rule or mode reference; do not add a universal ban from one anecdote. For wider effectiveness claims, use representative real projects and appropriate reader testing. This release has helper tests, an authored example and a focused delegated-review smoke run. Cross-model comparisons, the complete evaluation matrix and conversion evaluation remain future work.
 
 ## Module routing cases
 
@@ -32,3 +32,7 @@ Fix demonstrated failures at the relevant rule or mode reference; do not add a u
 - Mixed page: marketing narrative, form controls and failed-submit error on one landing page. Expect SaaS ownership for commercial claims, UI ownership for controls/state, core for language, and one coherent edit.
 - Specialist repair drift: supplied product requires draft review; removing jargon must not create autonomous or guaranteed output. Expect final shared truth/core checks after specialist rewriting.
 - Alias invocation: invoke installed decontaminate explicitly. Expect a single canonical Decringe pass, not a second legacy cleanup catalog or optional model API call.
+
+## Delegated review smoke run
+
+See [2026-10-03 observations](evaluations/2026-10-03-delegated-review.md) and [synthetic inputs](../examples/semantic-review/cases.json). This exercised the model rulebook → violation report → same-agent correction → semantic recheck sequence. It is one model/session with four small synthetic cases; no claim of equal performance to the Wordflows reviewer or reduced total cost follows.
